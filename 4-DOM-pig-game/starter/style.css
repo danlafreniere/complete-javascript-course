@@ -1,12 +1,7 @@
-/**********************************************
-*** GENERAL
-**********************************************/
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
 }
 
 .clearfix::after {
@@ -16,7 +11,7 @@
 }
 
 body {
-    background-image: linear-gradient(rgba(62, 20, 20, 0.4), rgba(62, 20, 20, 0.4)), url(back.jpg);
+    background-image: url(back.jpg);
     background-size: cover;
     background-position: center;
     font-family: Lato;
@@ -45,12 +40,6 @@ body {
     padding: 100px;
 }
 
-
-
-/**********************************************
-*** PLAYERS
-**********************************************/
-
 .player-name {
     font-size: 40px;
     text-align: center;
@@ -66,25 +55,30 @@ body {
     text-align: center;
     font-size: 80px;
     font-weight: 100;
-    color: #EB4D4D;
+    color: #361A29;
     margin-bottom: 130px;
 }
 
-.active { background-color: #f7f7f7; }
-.active .player-name { font-weight: 300; }
+.active {
+    background-color: #f7f7f7;
+}
+
+.active .player-name {
+    font-weight: 300;
+}
 
 .active .player-name::after {
     content: "\2022";
     font-size: 47px;
     position: absolute;
-    color: #EB4D4D;
+    color: #361A29;
     top: -7px;
     right: 10px;
-    
+
 }
 
 .player-current-box {
-    background-color: #EB4D4D;
+    background-color: #361A29;
     color: #fff;
     width: 40%;
     margin: 0 auto;
@@ -96,7 +90,7 @@ body {
     text-transform: uppercase;
     margin-bottom: 10px;
     font-size: 12px;
-    color: #222;
+    color: #FFF;
 }
 
 .player-current-score {
@@ -119,15 +113,16 @@ button {
     transition: background-color 0.3s, color 0.3s;
 }
 
-button:hover { font-weight: 600; }
-button:hover i { margin-right: 20px; }
+button:hover {
+    font-weight: 600;
+}
 
 button:focus {
     outline: none;
 }
 
 i {
-    color: #EB4D4D;
+    color: #361A29;
     display: inline-block;
     margin-right: 15px;
     font-size: 32px;
@@ -137,9 +132,17 @@ i {
     transition: margin 0.3s;
 }
 
-.btn-new { top: 45px;}
-.btn-roll { top: 403px;}
-.btn-hold { top: 467px;}
+.btn-new {
+    top: 45px;
+}
+
+.btn-roll {
+    top: 403px;
+}
+
+.btn-hold {
+    top: 467px;
+}
 
 .dice {
     position: absolute;
@@ -150,5 +153,10 @@ i {
     box-shadow: 0px 10px 60px rgba(0, 0, 0, 0.10);
 }
 
-.winner { background-color: #f7f7f7; }
-.winner .player-name { font-weight: 300; color: #EB4D4D; }
+.winner {
+    background-color: #f7f7f7;
+}
+
+.winner .player-name {
+    font-weight: 300; color: #361A29;
+}
