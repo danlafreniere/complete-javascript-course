@@ -13,30 +13,30 @@ initializeGame();
 
 document.querySelector('.btn-roll').addEventListener('click', function() {
   rollValue = Math.floor(Math.random() * 6) + 1;
-  dice.style.display = 'block'; 
+  dice.style.display = 'block';
   dice.src = 'dice-' + rollValue + '.png';
   if (rollValue == 1) {
     roundScore = 0;
     document.querySelector('#current-' + activePlayer).textContent = roundScore;
     activePlayer = swapActivePlayer(activePlayer);
   }
-  else { 
+  else {
     roundScore += rollValue;
     document.querySelector('#current-' + activePlayer).textContent = roundScore;
   }
 });
 
-document.querySelector('.btn-hold').addEventListener('click', function() { 
+document.querySelector('.btn-hold').addEventListener('click', function() {
   scores[activePlayer] += roundScore;
   roundScore = 0;
   document.querySelector('#current-' + activePlayer).textContent = roundScore;
   var playerScore = document.querySelector('#score-' + activePlayer);
   playerScore.textContent = scores[activePlayer];
-  if (scores[activePlayer] >= 100) { 
+  if (scores[activePlayer] >= 100) {
     document.querySelector('#name-' + activePlayer).textContent = 'WINNER!';
     var playerPanel = document.querySelector('.player-' + activePlayer + '-panel');
     playerPanel.classList.add('winner');
-    playerPanel.classList.remove('active'); 
+    playerPanel.classList.remove('active');
     this.style.display = 'none';
     document.querySelector('.btn-roll').style.display = 'none';
     return;
@@ -44,13 +44,11 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
   activePlayer = swapActivePlayer(activePlayer);
 });
 
-document.querySelector('.btn-new').addEventListener('click', function() { 
-  initializeGame();
-});
+document.querySelector('.btn-new').addEventListener('click', initializeGame);
 
-function initializeGame() { 
+function initializeGame() {
   scores = [0,0];
-  roundScore = 0; 
+  roundScore = 0;
   activePlayer = 0;
   var player1Panel = document.querySelector('.player-0-panel');
   var player2Panel = document.querySelector('.player-1-panel');
@@ -72,10 +70,10 @@ function initializeGame() {
 function swapActivePlayer(activePlayer) {
   document.querySelector('.player-' + activePlayer + '-panel').classList.toggle('active');
   if (activePlayer == 0) {
-    activePlayer = 1; 
-  } else { 
-    activePlayer = 0; 
-  } 
+    activePlayer = 1;
+  } else {
+    activePlayer = 0;
+  }
   document.querySelector('.player-' + activePlayer + '-panel').classList.toggle('active');
-  return activePlayer; 
+  return activePlayer;
 }
