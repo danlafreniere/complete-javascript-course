@@ -32,7 +32,7 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
   document.querySelector('#current-' + activePlayer).textContent = roundScore;
   var playerScore = document.querySelector('#score-' + activePlayer);
   playerScore.textContent = scores[activePlayer];
-  if (scores[activePlayer] >= 10) { 
+  if (scores[activePlayer] >= 100) { 
     document.querySelector('#name-' + activePlayer).textContent = 'WINNER!';
     var playerPanel = document.querySelector('.player-' + activePlayer + '-panel');
     playerPanel.classList.add('winner');
