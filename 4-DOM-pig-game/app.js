@@ -10,29 +10,48 @@ GAME RULES:
 var scores, roundScore, activePlayer, rollValue;
 
 scores = [0,0];
-roundScore = 0;
+roundScore = 0; 
 activePlayer = 0;
-document.querySelector('#current-0').textContent = 0;
-document.querySelector('#current-1').textContent = 0;
+var dice = document.querySelector('.dice');
+var player1 = document.querySelector('#name-0');
+var player2 = document.querySelector('#name-1');
 
+dice.style.display = 'none';
 
 document.querySelector('.btn-roll').addEventListener('click', function() {
   rollValue = Math.floor(Math.random() * 6) + 1;
+  dice.style.display = 'block'; 
+  dice.src = 'dice-' + rollValue + '.png';
   if (rollValue == 1) {
-    // everything dies.
     roundScore = 0;
     document.querySelector('#current-' + activePlayer).textContent = roundScore;
     activePlayer = swapActivePlayer(activePlayer);
   }
-  else {
+  else { 
     roundScore += rollValue;
     document.querySelector('#current-' + activePlayer).textContent = roundScore;
   }
-})
+});
+
+document.querySelector('.btn-hold').addEventListener('click', function() { 
+  scores[activePlayer] += roundScore;
+  roundScore = 0;
+  document.querySelector('#current-' + activePlayer).textContent = roundScore;
+  var playerScore = document.querySelector('#score-' + activePlayer);
+  playerScore.textContent = scores[activePlayer];
+  if (playerScore.textContent >= 100) { 
+
+  }
+  activePlayer = swapActivePlayer(activePlayer);
+});
 
 function swapActivePlayer(activePlayer) {
+  document.querySelector('.player-' + activePlayer + '-panel').classList.toggle('active');
   if (activePlayer == 0) {
-    return 1;
-  }
-  return 0;
+    activePlayer = 1; 
+  } else { 
+    activePlayer = 0; 
+  } 
+  document.querySelector('.player-' + activePlayer + '-panel').classList.toggle('active');
+  return activePlayer; 
 }
