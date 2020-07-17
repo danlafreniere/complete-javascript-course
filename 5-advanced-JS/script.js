@@ -114,7 +114,7 @@ retirementUs(1987);
 // or:
 retirement(66)(1995);
 
-var retireIceland = retirement(67);
+var retirementIceland = retirement(67);
 retirementIceland(1987);
 
 
@@ -124,3 +124,43 @@ retirementIceland(1987);
 
 // Closure: an inner function always has access to the variables and
 // parameters of its outer function, even after the outer function has returned.
+
+
+// Bind, Call, & Apply.
+
+var john = {
+  name: 'John',
+  age: '30',
+  job: 'teacher',
+  presentation: function(style, timeOfDay) {
+    if (style === 'formal') {
+      console.log('Good ' + timeOfDay + ', ladies and gentlemen!');
+    } else if (style === 'friendly') {
+      console.log('Yo yo yo');
+    }
+    console.log('I\'m ' + this.name);
+  }
+};
+
+john.presentation('formal', 'morning');
+
+var emily = {
+  name: 'Emily',
+  age: '28',
+  job: 'designer',
+};
+
+// Note that Emily doesn't have the presentation method so we can use 'call':
+// This is called method borrowing (we set the 'this' variable to emily).
+john.presentation.call(emily, 'friendly', 'afternoon');
+
+// The apply method is the same but acceps arguments as an array.
+// This won't work though since our function expects separate vars.
+// john.presentation.apply(emily, ['friendly', 'afternoon']);
+
+// Bind generates a copy of the function to store somewhere (instead of calling immediately).
+var johnFriendly = john.presentation.bind(john, 'friendly');
+johnFriendly('morning');
+johnFriendly('night');
+
+// This is called currying - when we create a function based on another function with preset parameters.
