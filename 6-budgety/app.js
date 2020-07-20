@@ -1,22 +1,3 @@
-// Planning and Architecture
-
-/**
- * TO DO LIST:
- * Fundamental bits:
- * Add event handler -> input income description/value and button to add
- * Retrieve data from input values
- * Add the new item to our data structure
- * Add the new item to the UI
- * Calculate budget
- * Update UI.
- *
- *  We will create modules to keep things nice and encapsulated.
- * 3 key modules:
- * - DATA MODULE - budgetController
- * - UI MODULE - UIController
- * - CONTROLLER MODULE - controller
- */
-
 var budgetController = (function() {
     var data = {
         allItems: {
@@ -129,7 +110,20 @@ var UIController = (function() {
         percentageValue: '.budget__expenses--percentage',
         itemsParent: '.items__container',
         expensesPercentageLabel: '.item__percentage',
+        dateLabel: '.budget__title--month',
     };
+    var formatNumber = function(number, type) {
+        var sign;
+        number = Math.abs(number);
+        number = number.toFixed(2);
+        type === 'expense' ? sign = '- ' : sign = '+ ';
+        return sign + number;
+    };
+    var nodeListForEach = function(list, callback) {
+        for (var i = 0; i < list.length; i++) {
+            callback(list[i], i);
+        }
+    }
     return {
         getInput: function() {
             return {
@@ -141,15 +135,15 @@ var UIController = (function() {
         addListItem: function(item, type) {
             var html, listContainer;
             if (type === 'income') {
-                html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">+ %value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+                html = '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
                 listContainer = document.querySelector(DOMStrings.incomeContainer);
             } else if (type === 'expense') {
-                html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">- %value%</div><div class="item__percentage">24%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+                html = '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">24%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
                 listContainer = document.querySelector(DOMStrings.expenseContainer);
             }
             html = html.replace('%id%', item.id);
             html = html.replace('%description%', item.description);
-            html = html.replace('%value%', item.value);
+            html = html.replace('%value%', formatNumber(item.value, type));
             listContainer.insertAdjacentHTML('beforeend', html);
         },
         deleteListItem: function(selectorID) {
@@ -166,9 +160,11 @@ var UIController = (function() {
             fields[0].focus();
         },
         displayBudget: function(data) {
-            document.querySelector(DOMStrings.budgetValue).textContent = data.budget;
-            document.querySelector(DOMStrings.incomeValue).textContent = data.totalIncome;
-            document.querySelector(DOMStrings.expenseValue).textContent = data.totalExpense;
+            var type;
+            data.budget >= 0 ? type = 'income' : type = 'expense';
+            document.querySelector(DOMStrings.budgetValue).textContent = formatNumber(data.budget, type);
+            document.querySelector(DOMStrings.incomeValue).textContent = formatNumber(data.totalIncome, 'income');
+            document.querySelector(DOMStrings.expenseValue).textContent = formatNumber(data.totalExpense, 'expense');
             if (data.percentDifference > 0) {
                 document.querySelector(DOMStrings.percentageValue).textContent = data.percentDifference + '%';
             } else {
@@ -178,11 +174,6 @@ var UIController = (function() {
         displayPercentages: function(percentages) {
             var fields;
             fields = document.querySelectorAll(DOMStrings.expensesPercentageLabel);
-            var nodeListForEach = function(list, callback) {
-                for (var i = 0; i < list.length; i++) {
-                    callback(list[i], i);
-                }
-            }
             nodeListForEach(fields, function(item, index) {
                 if (percentages[index] > 0) {
                     item.textContent = percentages[index] + '%';
@@ -190,6 +181,25 @@ var UIController = (function() {
                     item.textContent = '---';
                 }
             });
+        },
+        displayMonth: function() {
+            var today, year, month, months;
+            today = new Date();
+            year = today.getFullYear();
+            month = today.getMonth();
+            months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            document.querySelector(DOMStrings.dateLabel).textContent = months[month] + ', ' + year;
+        },
+        changedType: function() {
+            var fields = document.querySelectorAll(
+                DOMStrings.inputType + ',' +
+                DOMStrings.inputDescription + ',' +
+                DOMStrings.inputValue
+            );
+            nodeListForEach(fields, function(item) {
+                item.classList.toggle('red-focus');
+            });
+            document.querySelector(DOMStrings.inputButton).classList.toggle('red');
         },
         getDomStrings: function() {
             return DOMStrings;
@@ -208,6 +218,7 @@ var controller = (function(budgetCtrl, UICtrl) {
             }
         });
         document.querySelector(DOMStrings.itemsParent).addEventListener('click', ctrlDeleteItem);
+        document.querySelector(DOMStrings.inputType).addEventListener('change', UICtrl.changedType);
     };
     var ctrlAddItem = function() {
         var input, newItem;
@@ -262,6 +273,7 @@ var controller = (function(budgetCtrl, UICtrl) {
                 totalExpense: 0,
                 percentDifference: -1,
             });
+            UICtrl.displayMonth();
         },
     };
 })(budgetController, UIController);
