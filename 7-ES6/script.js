@@ -29,3 +29,34 @@ console.log(i);
 
 // console.log(a + b);  // This will error out.
 console.log(c); // This still works just fine.
+
+
+// Destructuring
+
+const [name, age] = ['John', 26];
+console.log(name);
+console.log(age);
+
+const obj = {
+  firstName: 'John',
+  lastName: 'Smith',
+};
+
+// The variable names have to match the keys:
+const {firstName, lastName} = obj;
+console.log(firstName);
+console.log(lastName);
+
+// or to give them new names:
+const {firstName: a, lastName: b} = obj;
+console.log(a);
+console.log(b);
+
+function calcAgeRetirement(year) {
+  const age = new Date().getFullYear() - year;
+  return [age, 65 - age];
+}
+
+const [anotherAge, retirement] = calcAgeRetirement(1987);
+console.log(anotherAge);
+console.log(retirement);
