@@ -50,9 +50,11 @@ const controlSearch = async () => {
 const controlRecipe = async () => {
   const id = window.location.hash.replace('#', '');
   if (id) {
+    renderLoader(elements.recipeContainer);
     state.recipe = new Recipe(id);
     try {
       await state.recipe.getRecipe();
+      state.recipe.parseIngredients();
       state.recipe.calcTime();
       state.recipe.calcServings();
       recipeView.clearRecipe();
