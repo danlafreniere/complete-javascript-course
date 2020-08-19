@@ -4,12 +4,20 @@ export const getInput = () => elements.searchInput.value;
 
 export const clearInput = () => {
   elements.searchInput.value = '';
-}
+};
 
 export const clearResults = () => {
   elements.searchResultList.innerHTML = '';
   elements.searchResultPages.innerHTML = '';
-}
+};
+
+export const highlightSelected = id => {
+  const resultsArray = Array.from(document.querySelectorAll('.results__link'));
+  resultsArray.forEach(el => {
+    el.classList.remove('results__link--active');
+  });
+  document.querySelector(`a[href*="${id}"]`).classList.add('results__link--active');
+};
 
 const renderRecipe = recipe => {
   const markup = `
@@ -26,7 +34,7 @@ const renderRecipe = recipe => {
     </li>
   `;
   elements.searchResultList.insertAdjacentHTML('beforeend', markup);
-}
+};
 
 const createButton = (page, type) => {
   return `
@@ -37,7 +45,7 @@ const createButton = (page, type) => {
       </svg>
     </button>
   `;
-}
+};
 
 const renderButtons = (page, numResults, resultsPerPage) => {
   const pages = Math.ceil(numResults / resultsPerPage);
@@ -53,11 +61,11 @@ const renderButtons = (page, numResults, resultsPerPage) => {
     button = createButton(page, 'prev');
   }
   elements.searchResultPages.insertAdjacentHTML('afterbegin', button);
-}
+};
 
 export const renderResults = (recipes, page = 1, resultsPerPage = 10) => {
   const start = (page - 1) * resultsPerPage;
   const end = resultsPerPage * page;
   recipes.slice(start, end).forEach(renderRecipe);
   renderButtons(page, recipes.length, resultsPerPage);
-}
+};
