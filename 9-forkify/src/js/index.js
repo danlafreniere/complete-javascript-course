@@ -87,7 +87,6 @@ const controlList = () => {
 
 elements.shoppingList.addEventListener('click', e => {
   const id = e.target.closest('.shopping__item').dataset.itemid;
-  console.log(state.list);
   if (e.target.matches('.shopping__delete, .shopping__delete *')) {
     state.list.deleteItem(id);
     listView.deleteItem(id);
